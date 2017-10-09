@@ -1,13 +1,14 @@
-import React from 'react'
-import Footer from './Footer.js'
-import Sidebar from './Sidebar.js'
+import React from 'react';
+import Footer from './Footer.js';
+import Sidebar from './Sidebar.js';
+import AllAlbums from './AllAlbums.js';
 
 export default class Main extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             //greeting: ':D' // Tom's law here dataType
-           albums : [
+           albums: [
                 {
                   name: 'Abbey Road',
                   id: 1,
@@ -60,33 +61,15 @@ export default class Main extends React.Component {
                   ]
                 }
               ]
-        }
+        };
     }
     render() {
         return (
             <div id="main" className="container-fluid">
                 <Sidebar />
-                <div className="col-xs-10">
-                <h3>Albums</h3>
-                <div className="row">
-                {this.state.albums.map((ele) =>
-                    (<div key={ele.id} className="col-xs-4">
-                        <a className="thumbnail" href="#">
-                            <img src="http://placeholdit.imgix.net/~text?txtsize=33&txt=ALBUMoneIMAGE&w=300&h=300" />
-                            <div className="caption">
-                                <h5>
-                                    <span>{ele.name}</span>
-                                </h5>
-                                <small>{ele.songs.length + ' songs'}</small>
-                            </div>
-                        </a>
-                    </div>)
-
-                )}
-                </div>
-              </div>
+                <AllAlbums albums = {this.state.albums} />
                 <Footer />
             </div>
-        )
+        );
     }
 }
