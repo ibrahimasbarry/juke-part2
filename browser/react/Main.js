@@ -2,6 +2,20 @@ import React from 'react';
 import Footer from './Footer.js';
 import Sidebar from './Sidebar.js';
 import AllAlbums from './AllAlbums.js';
+import axios from 'axios';
+
+axios.get('api/albums')
+.then(response => {
+  return response.data;
+})
+.then(data => {
+  console.log('success');
+  console.log(data);
+})
+.catch(err => {
+  console.error('error');
+  console.error(err);
+});
 
 export default class Main extends React.Component {
     constructor(props) {
