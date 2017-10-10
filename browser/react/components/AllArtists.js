@@ -36,7 +36,7 @@ export default class AllArtists extends Component{
               }
             </div>
           </div>
-          
+
         )
     }
 }
