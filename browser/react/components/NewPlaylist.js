@@ -1,26 +1,40 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 
 export default class NewPlaylist extends Component {
   constructor(){
     super();
     this.state = {
       inputValue: '',
+      isDirty: false
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleChange(event){
-    this.setState({inputValue: event.target.value})
+    this.setState({inputValue: event.target.value, isDirty: true})
   }
 
   handleSubmit(event){
     event.preventDefault();
+    axios.post('/api/playlists', {name:this.state.inputValue})
+      .then(res => res.data)
+      .then(result => {
+        console.log(result) // response json from the server!
+    });
+
     console.log(this.state.inputValue)
     this.setState({inputValue:''})
   }
 
   render () {
+    let alert = null;
+    ((!this.state.inputValue.length && this.state.isDirty)
+      || this.state.inputValue.length > 16)
+      ? alert = <div className="alert alert-warning">Please enter a name 1-16 characters long</div>
+      : alert = <div></div>
+
     return(
       <div className="well">
         <form className="form-horizontal" onSubmit={this.handleSubmit}>
@@ -29,7 +43,13 @@ export default class NewPlaylist extends Component {
             <div className="form-group">
               <label className="col-xs-2 control-label">Name</label>
               <div className="col-xs-10">
-                <input className="form-control" type="text" value={this.state.inputValue} onChange={this.handleChange} />
+                <input
+                  className="form-control"
+                  type="text"
+                  value={this.state.inputValue}
+                  onChange={this.handleChange}
+                />
+                {alert}
               </div>
             </div>
             <div className="form-group">
