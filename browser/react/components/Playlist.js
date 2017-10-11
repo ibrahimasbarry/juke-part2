@@ -10,7 +10,7 @@ export default class Playlist extends React.Component{
         this.state = {
             playlist: {}
         }
-        // this.getPlaylist = this.getPlaylist.bind(this);
+        this.addSongToPlaylist = this.addSongToPlaylist.bind(this);
     }
 
     getPlaylist(playlistId){
@@ -19,6 +19,18 @@ export default class Playlist extends React.Component{
         .then(playlist => {
             // playlist.songs = playlist.songs.map(convertsong);
             this.setState({ playlist })
+        })
+    }
+
+    addSongToPlaylist (playlistId, songId) {
+        return axios.post(`api/playlists/${playlistId}/songs`, {id: songId})
+        .then(({data}) => {
+            const playlist = this.state.playlist;
+            const songs = playlist.songs;
+            const newSongs = [...songs, data];
+            const newPlaylist = Object.assign({}, playlist, { songs: newSongs });
+            this.setState({ playlist: newPlaylist })
+            console.log(this.state.playlist.songs)
         })
     }
 
@@ -43,7 +55,7 @@ export default class Playlist extends React.Component{
             <Songs songs={playlist.songs} /> {/** Hooray for reusability! */}
             { playlist.songs && !playlist.songs.length && <small>No songs.</small> }
             <hr />
-            <AddSongForm />
+            <AddSongForm playlist={playlist} addSongToPlaylist={this.addSongToPlaylist} />
           </div>
         )
     }

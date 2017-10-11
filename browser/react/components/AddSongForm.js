@@ -5,40 +5,32 @@ export default class AddSongForm extends Component{
     constructor(){
         super();
         this.state = {
-            song: {}
+            songs: [],
+            songId: 1
         }
         this.handlesChange = this.handlesChange.bind(this);
         this.handlesSubmit = this.handlesSubmit.bind(this);
-        this.grabSongs = this.grabSongs.bind(this)
     }
 
-    addSongToPlaylist (songId) {
-        axios.post('/api/:playlistId/songs', {id: songId})
-        .then(res => res.data)
-        .then(song => {
-            console.log(song)
-          this.setState({
-            song: song
-          })
-      });
-      }
+    componentDidMount(){
+        axios.get('/api/songs')
+        .then(({data}) => this.setState({ songs: data }))
+    }
 
     handlesChange(event){
-        this.setState({song: event.target.value})
+        this.setState({songId: event.target.value})
     }
 
     handlesSubmit(event){
         event.preventDefault();
-        this.addSongToPlaylist(this.state.song.id);
+        const songId = this.state.songId;
+        const playlistId = this.props.playlist.id;
+        this.props.addSongToPlaylist(playlistId, songId);
         this.setState({
             song: {}
         })
     }
 
-    grabSongs(){
-        axios.get('/api/songs')
-        .then(res => res.data)
-    }
 
     render(){
         return (
@@ -50,7 +42,7 @@ export default class AddSongForm extends Component{
                   <label htmlFor="song" className="col-xs-2 control-label">Song</label>
                   <div className="col-xs-10">
                     <select className="form-control" name="song" onChange={this.handleChange}>
-                    { this.grabSongs.map(song => {
+                    { this.state.songs.map(song => {
                         return (
                             <option key={song.id} value={song.id}>{song.name}</option>
                         )})

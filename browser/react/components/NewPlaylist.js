@@ -19,7 +19,7 @@ export default class NewPlaylist extends Component {
   handleSubmit(event){
     event.preventDefault();
     this.props.addPlaylist(this.state.inputValue)
-    this.setState({inputValue:'', isDirty: false})
+    this.setState({inputValue: '', isDirty: false})
   }
 
   render () {
@@ -27,9 +27,9 @@ export default class NewPlaylist extends Component {
     ((!this.state.inputValue.length && this.state.isDirty)
       || this.state.inputValue.length > 16)
       ? alert = <div className="alert alert-warning">Please enter a name 1-16 characters long</div>
-      : alert = <div></div>
+      : alert = <div />
 
-    return(
+    return (
       <div className="well">
         <form className="form-horizontal" onSubmit={this.handleSubmit}>
           <fieldset>
@@ -48,7 +48,12 @@ export default class NewPlaylist extends Component {
             </div>
             <div className="form-group">
               <div className="col-xs-10 col-xs-offset-2">
-                <button type="submit" className="btn btn-success" disabled={!(this.state.inputValue.length && this.state.inputValue.length < 17)} >Create Playlist</button>
+                <button
+                 type="submit"
+                 className="btn btn-success"
+                 disabled={!(this.state.inputValue.length && this.state.inputValue.length < 17)} >
+                 Create Playlist
+                 </button>
               </div>
             </div>
           </fieldset>
