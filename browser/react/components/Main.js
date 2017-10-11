@@ -5,6 +5,7 @@ import SingleAlbum from './SingleAlbum';
 import AllArtists from './AllArtists';
 import SingleArtist from './SingleArtist';
 import NewPlaylist from './NewPlaylist';
+import Playlist from './Playlist';
 import Sidebar from './Sidebar';
 import Player from './Player';
 import axios from 'axios';
@@ -35,7 +36,6 @@ export default class Main extends Component {
   }
 
   render () {
-    console.log(this.state)
     return (
       <Router>
         <div id="main" className="container-fluid">
@@ -49,6 +49,7 @@ export default class Main extends Component {
               <Route exact path="/artists" component={AllArtists} />
               <Route path="/artists/:artistId" component={SingleArtist} />
               <Route path="/new-playlist" render={() => <NewPlaylist addPlaylist={this.addPlaylist} />} />
+              <Route exact path="/playlists/:playlistId" component={Playlist} />
               <Route component={StatefulAlbums} />
             </Switch>
           </div>
