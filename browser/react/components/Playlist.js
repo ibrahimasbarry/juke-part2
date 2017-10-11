@@ -1,6 +1,7 @@
 import React from 'react';
 import Songs from './Songs';
 import axios from 'axios';
+import AddSongForm from './AddSongForm';
 
 export default class Playlist extends React.Component{
 
@@ -9,19 +10,32 @@ export default class Playlist extends React.Component{
         this.state = {
             playlist: {}
         }
+        // this.getPlaylist = this.getPlaylist.bind(this);
     }
 
-    componentDidMount(){
-        const playlistId = this.props.match.params.playlistId;
+    getPlaylist(playlistId){
         axios.get(`/api/playlists/${playlistId}`)
         .then(res => res.data)
         .then(playlist => {
+            // playlist.songs = playlist.songs.map(convertsong);
             this.setState({ playlist })
         })
     }
 
+    componentDidMount(){
+        const playlistId = this.props.match.params.playlistId;
+        this.getPlaylist(playlistId);
+    }
+
+    componentWillReceiveProps(nextProps){
+        const nextPlaylistId = nextProps.match.params.playlistId;
+        const currentPlaylistId = this.props.match.params.playlistId;
+        if (nextPlaylistId !== currentPlaylistId) {
+            this.getPlaylist(nextPlaylistId)
+        }
+    }
+
     render(){
-        console.log(this.state.playlist)
         const playlist = this.state.playlist;
         return (
             <div>
@@ -29,6 +43,7 @@ export default class Playlist extends React.Component{
             <Songs songs={playlist.songs} /> {/** Hooray for reusability! */}
             { playlist.songs && !playlist.songs.length && <small>No songs.</small> }
             <hr />
+            <AddSongForm />
           </div>
         )
     }
