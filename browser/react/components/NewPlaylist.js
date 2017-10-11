@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import axios from 'axios';
 
 export default class NewPlaylist extends Component {
-  constructor(){
-    super();
+  constructor(props){
+    super(props);
     this.state = {
       inputValue: '',
       isDirty: false
@@ -18,14 +18,8 @@ export default class NewPlaylist extends Component {
 
   handleSubmit(event){
     event.preventDefault();
-    axios.post('/api/playlists', {name:this.state.inputValue})
-      .then(res => res.data)
-      .then(result => {
-        console.log(result) // response json from the server!
-    });
-
-    console.log(this.state.inputValue)
-    this.setState({inputValue:''})
+    this.props.addPlaylist(this.state.inputValue)
+    this.setState({inputValue:'', isDirty: false})
   }
 
   render () {
